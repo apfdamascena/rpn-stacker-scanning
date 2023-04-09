@@ -1,27 +1,32 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 public class RPNStacker {
 
     private final Calculator calculator = new Calculator();
 
-    public Integer calculate(ArrayList<String> input){
-        Iterator<String> iterator = input.iterator();
-        Stack<Integer> stack = new Stack<>();
+    public Token calculate(List<Token> input){
+        Iterator<Token> iterator = input.iterator();
+        Stack<Token> stack = new Stack<>();
 
-        Integer output = 0;
+        Token output;
 
         while(iterator.hasNext()){
-            String token = iterator.next();
+            Token token = iterator.next();
 
             if(stack.size() < 2) {
-                output = Integer.parseInt(token);
+                output = token;
             } else {
-                Integer left = stack.pop();
-                Integer right = stack.pop();
+                Token left = stack.pop();
+                Token right = stack.pop();
 
-                output = calculator.calculate(token, right, left);
+                Integer rightNumber = Integer.parseInt(right.lexeme);
+                Integer leftNumber = Integer.parseInt(left.lexeme);
+
+                Integer afterOperation = calculator.calculate(token.lexeme, rightNumber, leftNumber);
+                output = new Token(TokenType.NUM, afterOperation.toString());
             }
 
             stack.add(output);

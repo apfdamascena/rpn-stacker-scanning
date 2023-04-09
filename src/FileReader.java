@@ -21,19 +21,20 @@ public class FileReader {
         List<Token> tokens = new ArrayList<>();
 
         try (Scanner input = new Scanner(file)){
-            String digit = input.nextLine();
 
-            Token token;
+            while(input.hasNextLine()){
+                String digit = input.nextLine();
 
-            if(isValid(digit)) token = new Token(TokenType.NUM, digit);
-            else if (digit.equals("+")) token = new Token(TokenType.PLUS, digit);
-            else if (digit.equals("-")) token = new Token(TokenType.MINUS, digit);
-            else if (digit.equals("*")) token = new Token(TokenType.STAR, digit);
-            else if (digit.equals("/")) token = new Token(TokenType.SLASH, digit);
-            else throw new Exception("Unkown Character");
+                Token token;
 
-            tokens.add(token);
-            
+                if(isValid(digit)) token = new Token(TokenType.NUM, digit);
+                else if (digit.equals("+")) token = new Token(TokenType.PLUS, digit);
+                else if (digit.equals("-")) token = new Token(TokenType.MINUS, digit);
+                else if (digit.equals("*")) token = new Token(TokenType.STAR, digit);
+                else if (digit.equals("/")) token = new Token(TokenType.SLASH, digit);
+                else throw new Exception("Unknown Character");
+                tokens.add(token);
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
