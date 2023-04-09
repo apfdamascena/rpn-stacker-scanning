@@ -32,7 +32,7 @@ public class FileReader {
                 else if (digit.equals("-")) token = new Token(TokenType.MINUS, digit);
                 else if (digit.equals("*")) token = new Token(TokenType.STAR, digit);
                 else if (digit.equals("/")) token = new Token(TokenType.SLASH, digit);
-                else throw new Exception("Unknown Character");
+                else throw new Exception("[Error] Unexpected character: " + digit);
                 tokens.add(token);
             }
         } catch (Exception e){
