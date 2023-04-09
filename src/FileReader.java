@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileReader {
@@ -12,23 +13,36 @@ public class FileReader {
         this.path = path;
     }
 
-    public ArrayList<String> read(){
+    public List<Token> read(){
         String directory = System.getProperty("user.dir");
         String filepath = directory + this.path;
-
         File file = new File(filepath);
-        ArrayList<String> input = new ArrayList<>();
 
-        try (Scanner in = new Scanner(file, StandardCharsets.UTF_8)){
-            while(in.hasNextLine()){
-                String line = in.nextLine();
-                input.add(line);
-            }
-        } catch (IOException e){
+        List<Token> tokens = new ArrayList<>();
+
+        try (Scanner input = new Scanner(file)){
+            String digit = input.nextLine();
+
+            Token token;
+
+            if(isValid(digit)) token = new Token(TokenType.NUM, digit);
+            else if (digit.equals("+")) token = new Token(TokenType.PLUS, digit);
+            else if (digit.equals("-")) token = new Token(TokenType.MINUS, digit);
+            else if (digit.equals("*")) token = new Token(TokenType.STAR, digit);
+            else if (digit.equals("/")) token = new Token(TokenType.SLASH, digit);
+            else throw new Exception("Unkown Character");
+
+            tokens.add(token);
+            
+        } catch (Exception e){
             e.printStackTrace();
         }
 
-        return input;
+        return tokens;
+    }
+
+    public boolean isValid(String digit){
+        return digit != null && digit.matches("[0-9]*");
     }
 
 
